@@ -2,10 +2,10 @@
 {
     public interface IRepositoryBase<T>
     {
-        Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
-        Task<T> GetAsync(Guid id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task AddAsync(T entity, CancellationToken cancellationToken);
+        Task UpdateAsync(T entity, CancellationToken cancellationToken);
+        Task DeleteAsync(T entity, CancellationToken cancellationToken);
+        Task<T> GetAsync(Guid id, CancellationToken cancellationToken);
+        Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken);
     }
 }
