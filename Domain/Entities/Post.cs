@@ -10,5 +10,8 @@ namespace PrimeiroAppAws.Domain.Entities
         }
 
         public string Description { get; set; }
+
+        public Guid? BlogId { get; set; }
+        public Blog? Blog { get; set; }
     }
 }

@@ -4,14 +4,14 @@ namespace PrimeiroAppAws.Domain.Entities
 {
     public class Blog : BaseModel
     {
-        public Blog(string description, ICollection<Post> posts)
+
+        public Blog(string description)
         {
             Description = description;
-            Posts = posts;
         }
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
-        public ICollection<Post> Posts { get; private set; }
+        public ICollection<Post>? Posts { get; set; }
     }
 }

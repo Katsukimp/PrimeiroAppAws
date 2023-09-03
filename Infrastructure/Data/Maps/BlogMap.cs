@@ -16,7 +16,10 @@ namespace PrimeiroAppAws.Infrastructure.Data.Maps
 
             builder.Property(x => x.Description);
 
-            builder.HasMany(x => x.Posts).WithOne(); 
+            builder.HasMany(x => x.Posts)
+                .WithOne(x => x.Blog)
+                .HasForeignKey(x => x.Id)
+                .IsRequired(false);
         }
     }
 }
