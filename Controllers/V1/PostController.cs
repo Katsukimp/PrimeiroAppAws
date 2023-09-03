@@ -60,7 +60,7 @@ namespace PrimeiroAppAws.Controllers.V1
 
                 return Created("Created", post);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await _unitOfWork.RollbackAsync(cancellationToken);
                 return BadRequest("Não foi possível criar o post.");
