@@ -6,15 +6,15 @@ using PrimeiroAppAws.Infrastructure.Data.Commom.Interfaces;
 
 namespace PrimeiroAppAws.Controllers.V1
 {
-    public class BlogController : BaseController
+    public class PostController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IBlogRepository _blogRepository;
+        private readonly IPostRepository _postRepository;
 
-        public BlogController(IUnitOfWork unitOfWork, IBlogRepository blogRepository)
+        public PostController(IUnitOfWork unitOfWork, IPostRepository postRepository)
         {
             _unitOfWork = unitOfWork;
-            _blogRepository = blogRepository;
+            _postRepository = postRepository;
         }
 
         [HttpGet("{id}")]
@@ -25,7 +25,7 @@ namespace PrimeiroAppAws.Controllers.V1
 
             try
             {
-                var blog = await _blogRepository.GetAsync(id, cancellationToken);
+                var blog = await _postRepository.GetAsync(id, cancellationToken);
 
                 if (blog is null)
                     return BadRequest("Nenhum registro com esse código foi encontrado.");
@@ -34,48 +34,48 @@ namespace PrimeiroAppAws.Controllers.V1
             }
             catch (Exception)
             {
-                return BadRequest("Ocorreu um erro ao buscar informações do blog.");
+                return BadRequest("Ocorreu um erro ao buscar informações do post.");
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
         {
-            var blogs = await _blogRepository.GetAllAsync(cancellationToken);
+            var posts = await _postRepository.GetAllAsync(cancellationToken);
 
-            return blogs.Any() is false ? BadRequest("Nenhum registro encontrado") : Ok(blogs);
+            return posts.Any() is false ? BadRequest("Nenhum registro encontrado") : Ok(posts);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBlogAsync([FromBody] Blog blog, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreatePostAsync([FromBody] Post post, CancellationToken cancellationToken)
         {
-            if (blog is null)
-                return BadRequest("Nenhuma blog foi enviado para ser criado.");
+            if (post is null)
+                return BadRequest("Nenhuma post foi enviado para ser criado.");
 
 
             try
             {
-                await _blogRepository.AddAsync(blog, cancellationToken);
+                await _postRepository.AddAsync(post, cancellationToken);
                 await _unitOfWork.CommitAsync(cancellationToken);
 
-                return Created("Created", blog);
+                return Created("Created", post);
             }
             catch (Exception ex)
             {
                 await _unitOfWork.RollbackAsync(cancellationToken);
-                return BadRequest("Não foi possível criar o blog.");
+                return BadRequest("Não foi possível criar o post.");
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateBlogAsync([FromBody] Blog blog, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdatePostAsync([FromBody] Post post, CancellationToken cancellationToken)
         {
-            if (blog is null)
-                return BadRequest("Nenhuma blog foi enviado para ser criado.");
+            if (post is null)
+                return BadRequest("Nenhuma post foi enviado para ser criado.");
 
             try
             {
-                await _blogRepository.UpdateAsync(blog, cancellationToken);
+                await _postRepository.UpdateAsync(post, cancellationToken);
                 await _unitOfWork.CommitAsync(cancellationToken);
 
                 return Ok("Registro atualizado com sucesso.");
@@ -83,25 +83,25 @@ namespace PrimeiroAppAws.Controllers.V1
             catch (Exception)
             {
                 await _unitOfWork.RollbackAsync(cancellationToken);
-                return BadRequest("Não foi possível atualizar as informações do blog.");
+                return BadRequest("Não foi possível atualizar as informações do post.");
             }
         }
 
         [HttpDelete("{id}")]
 
-        public async Task<IActionResult> DeleteBlogAsync([FromRoute] Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeletePostAsync([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             if (Guid.Empty == id)
                 return BadRequest("O Código informado é inválido.");
 
-            var blog = await _blogRepository.GetAsync(id, cancellationToken);
+            var post = await _postRepository.GetAsync(id, cancellationToken);
 
-            if (blog is null)
+            if (post is null)
                 return BadRequest("Nenhum registro com esse código foi encontrado.");
 
             try
             {
-                await _blogRepository.DeleteAsync(blog, cancellationToken);
+                await _postRepository.DeleteAsync(post, cancellationToken);
                 await _unitOfWork.CommitAsync(cancellationToken);
 
                 return Ok("Registro deletado com sucesso.");
@@ -109,7 +109,7 @@ namespace PrimeiroAppAws.Controllers.V1
             catch (Exception)
             {
                 await _unitOfWork.RollbackAsync(cancellationToken);
-                return BadRequest("Ocorreu um erro ao excluir o blog.");
+                return BadRequest("Ocorreu um erro ao excluir o post.");
             }
         }
     }
