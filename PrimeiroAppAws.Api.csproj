@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Validation\" />
-    <Folder Include="Domain\Setup\" />
+    <ProjectReference Include="..\PrimeiroAppAws.Domain\PrimeiroAppAws.Domain.csproj" />
+    <ProjectReference Include="..\PrimeiroAppAws.Infrastructure\PrimeiroAppAws.Data.csproj" />
   </ItemGroup>
 
 </Project>
